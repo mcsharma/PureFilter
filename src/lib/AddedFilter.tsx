@@ -38,12 +38,6 @@ const AddedFilter: React.FC<IFilterToken> = ({
         selectedOperator={filter.operator}
         onChange={(op) => onUpdate({ ...filter, operator: op })}
       />
-      <SingleValueSelector
-        entityNames={filter.field.names}
-        options={options}
-        value={toOption(filter.operator)}
-        onChange={(newOption) => onUpdate({ ...filter, operator: newOption.id as OperatorType })}
-      />
       <div style={{ width: 2 }} />
       <FilterValuesInput
         field={filter.field}

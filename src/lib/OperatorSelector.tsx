@@ -1,12 +1,7 @@
 import * as React from 'react'
 import FieldOperatorMappings from './config/FieldOperatorMappings'
 import { FieldType, OperatorType } from './types'
-import Autocomplete from '@mui/joy/Autocomplete'
-import Edit from '@mui/icons-material/Edit'
-import Chip from '@mui/joy/Chip'
-import ClickAwayListener from '@mui/base/ClickAwayListener'
-import Popper from '@mui/material/Popper'
-import Sheet from '@mui/joy/Sheet'
+import { Select, Option } from '@mui/joy'
 
 interface IOperatorSelector {
   fieldType: FieldType
@@ -27,72 +22,21 @@ export default function OperatorSelector({
       })),
     [fieldType]
   )
-  const handleClose = () => {
-    setShowDropdown(false)
-    setAnchorEl(null)
-  }
 
-  const [showDropdown, setShowDropdown] = React.useState(false)
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  return (
-    <>
-      <Chip
-        sx={{ borderRadius: 0 }}
-        endDecorator={<Edit fontSize="small" />}
-        onClick={(e) => {
-          setShowDropdown(!showDropdown)
-          setAnchorEl(e.currentTarget)
-        }}
-      >
-        {toOpString(selectedOperator)}
-      </Chip>
-      <Popper open={showDropdown} anchorEl={anchorEl} placement="bottom-start">
-        <ClickAwayListener onClickAway={handleClose}>
-          <Sheet variant="plain">
-            <Autocomplete
-              variant="plain"
-              size="sm"
-              open
-              autoFocus
-              multiple
-              disableClearable
-              forcePopupIcon={false}
-              placeholder="Search operator"
-              noOptionsText="No matching operator"
-              options={opMenuItems}
-              value={[
-                {
-                  id: selectedOperator,
-                  label: toOpString(selectedOperator),
-                },
-              ]}
-              onClose={(e, reason) => {
-                if (reason === 'escape') {
-                  handleClose()
-                }
-              }}
-              renderTags={() => null}
-              onChange={(event, newValue, reason) => {
-                if (
-                  event.type === 'keydown' &&
-                  ((event as React.KeyboardEvent).key === 'Backspace' ||
-                    (event as React.KeyboardEvent).key === 'Delete') &&
-                  reason === 'removeOption'
-                ) {
-                  return
-                }
-                setShowDropdown(false)
-                onChange((newValue[newValue.length - 1] as unknown as any).id)
-              }}
-              sx={{
-                width: 180,
-              }}
-            />
-          </Sheet>
-        </ClickAwayListener>
-      </Popper>
-    </>
-  )
+  return <Select
+    size="sm"
+    variant='plain'
+    slotProps={{
+      root: {
+        'borderRadius': 0
+      }
+    }}
+    sx={{ width: 180 }}
+  >
+    {opMenuItems.map((option) => (
+      <Option value={option.id}>{option.label}</Option>
+    ))}
+  </Select>
 }
 
 function toOpString(op: OperatorType): string {
