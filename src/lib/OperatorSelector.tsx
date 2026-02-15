@@ -1,7 +1,8 @@
 import * as React from 'react'
 import FieldOperatorMappings from './config/FieldOperatorMappings'
 import { FieldType, OperatorType } from './types'
-import { Select, Option } from '@mui/joy'
+import Select from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
 
 interface IOperatorSelector {
   fieldType: FieldType

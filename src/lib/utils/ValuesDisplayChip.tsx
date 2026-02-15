@@ -1,7 +1,6 @@
 import Edit from '@mui/icons-material/Edit'
 import Chip from '@mui/joy/Chip'
 import valuesList from './valuesList'
-import React = require('react')
 import { DefaultColorPalette } from '@mui/joy/styles/types/colorSystem'
 import { EntityNames, SelectionType } from './types'
 

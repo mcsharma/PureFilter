@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
+    "module": "ESNext", // Keeps imports as ES Modules
+    "target": "ES6",    
     "outDir": "./dist/",
     "moduleResolution": "node",
-    "target": "es5",
     "allowJs": false,
     "strict": true,
     "strictNullChecks": true,
