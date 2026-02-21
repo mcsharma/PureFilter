@@ -1,40 +1,17 @@
 import * as React from 'react'
 import AddedFilter from './AddedFilter'
 import FieldSearchTypeahead from './FieldSearchTypeahead'
-import { FieldBase, OperatorType, SimpleFilter } from './types'
-import getDefaultFilterValues from './utils/getDefaultFilterValues'
+import { FieldBase } from './types'
+import usePowerSearch from './hooks/usePowerSearch'
 const styled = window.styled
 import './css/index.css'
-import { getRandomString } from './utils/random'
 
 interface IPowerSearch {
   schema: Array<FieldBase>
 }
 
 const PowerSearch: React.FC<IPowerSearch> = ({ schema }) => {
-  const [filters, setFilters] = React.useState<Array<SimpleFilter<any>>>([])
-
-  const addFilter = (field: FieldBase) => {
-    setFilters([
-      ...filters,
-      {
-        id: getRandomString(),
-        field,
-        operator: OperatorType.IS,
-        values: getDefaultFilterValues(field.type, OperatorType.IS),
-      },
-    ])
-  }
-  const deleteFilter = (filterID: string) => {
-    setFilters(filters.filter((filter) => filter.id !== filterID))
-  }
-  const updateFilter = (updatedFilter: SimpleFilter<any>) => {
-    setFilters(
-      filters.map((filter) =>
-        filter.id === updatedFilter.id ? updatedFilter : filter
-      )
-    )
-  }
+  const { filters, addFilter, deleteFilter, updateFilter } = usePowerSearch()
 
   return (
     <Root>
@@ -46,7 +23,7 @@ const PowerSearch: React.FC<IPowerSearch> = ({ schema }) => {
           onDelete={() => deleteFilter(curFilter.id)}
         />
       ))}
-      <FieldSearchTypeahead onSelect={addFilter} />
+      <FieldSearchTypeahead fields={schema} onSelect={addFilter} />
     </Root>
   )
 }

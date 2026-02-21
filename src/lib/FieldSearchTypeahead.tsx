@@ -1,16 +1,20 @@
 import { FieldBase } from './types'
 import * as React from 'react'
-import { schemaFields } from '../app/testSchema'
 import Autocomplete from '@mui/joy/Autocomplete'
 
 interface IFieldSearchTypeahead {
+  fields: Array<FieldBase>
   onSelect: (field: FieldBase) => void
 }
 
 export default function FieldSearchTypeahead({
+  fields,
   onSelect,
 }: IFieldSearchTypeahead) {
-  const fieldNames = schemaFields.map((s) => s.names.singular)
+  const fieldNames = React.useMemo(
+    () => fields.map((s) => s.names.singular),
+    [fields]
+  )
   const [inputValue, setInputValue] = React.useState('')
   return (
     <Autocomplete
@@ -25,7 +29,7 @@ export default function FieldSearchTypeahead({
       }}
       value=""
       onChange={(e, fieldName) => {
-        const field = schemaFields.find((field) => field.names.singular === fieldName)
+        const field = fields.find((field) => field.names.singular === fieldName)
         if (field) {
           onSelect(field)
           setInputValue('')
